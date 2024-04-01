@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function() {
+        $('a#recordButton').on('click', function(e) {
+            e.preventDefault();
+            var recordButton = $(this).find('button');
+            recordButton.text('Recording...');
+            
+            $.getJSON('/record', function(data) {
+                $("#tone").text(data.tone);
+                $("#comparisonResult").text("Comparison Result: " + data.comparison_result);
+                recordButton.text('Record Again');
+            });
+        });
+        
+        $('#nextButton').on('click', function(e) {
+            e.preventDefault();
+            location.reload();
+        });
+    });
+</script>
+    
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body> 
+    <h1>Mandarin Tone Classifier</h1>
+    <div class='container'>
+        <h1>Pronounce this character</h1>
+        <h1 id="character" style="margin: 0; padding: 0;">{{ character }} - {{ pinyin }}</h1>
+        
+        <div class = 'btn'>
+            <form>
+                    <a href=# id=recordButton><button id="recordButtonBTN" class='recordButtonCLS'>Start Recording</button></a>
+                    <button id="nextButton">Next</button>
+            </form>
+        </div>
+        <div class='text'>
+            <h2>Actual Tone</h2>
+            <p class="tones" id="actualTone" placeholder="Actual Tone">{{ actual_tone }}</p>
+        </div>
+        <div style="padding-bottom: 20px;" class='text'>
+            <h2>Predicted Tone</h2>
+            <p class="tones" style="margin-top:0" id="tone" placeholder="Your tone will appear here!"></p>
+        </div>
+        
+            
+    </div>
+</body>
+</html>
